@@ -40,7 +40,7 @@ def create_record():
     }
     token_v2 = os.environ.get("TOKEN")
     url = os.environ.get("URL")
-    createNotionTask(token_v2, url, content)
+    createNotionRecord(token_v2, url, content)
     return f'added {content} to Notion'
 
 if __name__ == '__main__':
