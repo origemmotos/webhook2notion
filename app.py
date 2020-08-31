@@ -28,15 +28,27 @@ def createNotionRecord(token, collectionURL, content):
     client = NotionClient(token)
     cv = client.get_collection_view(collectionURL)
     row = cv.collection.add_row()
-    row.name = content["name"]
-    row.field1 = content["field1"]
+    row.nome = content["name"]
+    row.action = content["action_type"]
+    row.item = content["item"]
+    row.pn = content["part_number"]
+    row.quantidade = content["quantity"]
+    row.reason = content["reason"]
+    row.obs = content["ps"]
+    row.ts = content["ts"]
 
 @app.route('/create_record', methods=['GET'])
 def create_record():
 
     content = {
         "name": request.args.get('name'),
-        "field1": request.args.get('field1')
+        "action_type": request.args.get('action_type'),
+        "item": request.args.get('item'),
+        "part_number": request.args.get('part_number'),
+        "quantity": request.args.get('quantity'),
+        "reason": request.args.get('reason'),
+        "ps": request.args.get('ps'),
+        "ts": request.args.get('ts')
     }
     token_v2 = os.environ.get("TOKEN")
     url = os.environ.get("URL")
