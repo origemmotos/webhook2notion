@@ -14,9 +14,9 @@ def createNotionTask(token, collectionURL, content):
     row = cv.collection.add_row()
     row.title = content
 
-def createNotionTask_recebimento(token_recebimento, collectionURL_recebimento, content_recebimento):
+def createNotionTask_recebimento(token, collectionURL_recebimento, content_recebimento):
     # notion
-    client_recebimento = NotionClient(token_recebimento)
+    client_recebimento = NotionClient(token)
     cv_recebimento = client.get_collection_view(collectionURL_recebimento)
     row_recebimento = cv_recebimento.collection.add_row()
     row_recebimento.title = content_recebimento
@@ -34,9 +34,9 @@ def create_todo_estoque():
 def create_todo_recebimento():
 
     todo_recebimento = request.args.get('todo_recebimento')
-    token_v2_recebimento = os.environ.get("token_recebimento")
+    token_v2 = os.environ.get("TOKEN")
     url_recebimento = os.environ.get("url_recebimento")
-    createNotionTask(token_v2_recebimento, url_recebimento, todo_recebimento)
+    createNotionTask(token_v2, url_recebimento, todo_recebimento)
     return f'added {todo_recebimento} to Notion'
 
 def getItemRelation(token, collectionURL, itemName):
@@ -46,7 +46,7 @@ def getItemRelation(token, collectionURL, itemName):
     item = [i for i in items if i.Part == itemName]
     return item
 
-def getnameRelation(token_recebimento, collectionURL_recebimento, name):
+def getnameRelation(token, collectionURL_recebimento, name):
     cv_recebimento = client_recebimento.get_collection_view(collectionURL_recebimento)
     names = cv_recebimento.collection.get_rows(search=name)
     # notion-py search/query is not working, searching for item within items list
@@ -95,12 +95,12 @@ def create_record():
     else:
 	return f'failed to add {content} to Notion'
 
-def createNotionRecord_recebimento(token_recebimento, collectionURL_recebimento, urlname, content_recebimento):
+def createNotionRecord_recebimento(token, collectionURL_recebimento, urlname, content_recebimento):
     # notion
-    client_recebimento = NotionClient_recebimento(token_recebimento)
+    client_recebimento = NotionClient_recebimento(token)
     cv_recebimento = client_recebimento.get_collection_view(collectionURL_recebimento)
     # retrieve item from items collection
-    name = getnameRelation(token_recebimento, urlname, content["name"])
+    name = getnameRelation(token, urlname, content["name"])
     if (name == None):
 	print("Name '{}' not found in related database".format(content_recebimento["name"]))
 	return -1
@@ -128,10 +128,10 @@ def create_record_recebimento():
         "ts": request.args.get('ts')
     }
 
-    token_v2_recebimento = os.environ.get("token_recebimento")
+    token_v2 = os.environ.get("token")
     url_recebimento = os.environ.get("url_recebimento")
     urlname = os.environ.get("url_name")
-    r_recebimento = createNotionRecord(token_v2_recebimento, url_recebimento, urlname, content_recebimento)
+    r_recebimento = createNotionRecord(token_v2, url_recebimento, urlname, content_recebimento)
     if (r_recebimento == 0):
         return f'added {content_recebimento} to Notion'
     else:
